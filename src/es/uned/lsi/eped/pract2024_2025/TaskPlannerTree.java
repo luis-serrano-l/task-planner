@@ -2,21 +2,42 @@ package es.uned.lsi.eped.pract2024_2025;
 
 
 import es.uned.lsi.eped.DataStructures.IteratorIF;
+import es.uned.lsi.eped.DataStructures.List;
+import es.uned.lsi.eped.DataStructures.BSTree;
+import es.uned.lsi.eped.DataStructures.BSTreeIF;
 
 public class TaskPlannerTree implements TaskPlannerIF{
 
 	/* Declaración de atributos para almacenar la información del planificador de tareas */
 
 	/* Estructura que almacena las tareas pasadas */
-	protected ... pastTasks;
+	protected List<TaskIF> pastTasks;
 	/* La estructura que almacena las tareas futuras debe ser un BSTree */
 	protected BSTreeIF<TaskIF> futureTasks;
+
+	public TaskPlannerTree() {
+		pastTasks = new List<TaskIF>();
+		futureTasks = new BSTree(Order.DESCENDING);
+	}
+
+	public TaskPlannerTree(List<TaskIF> pastTasks, BSTreeIF<TaskIF> futureTasks) {
+		this.pastTasks = pastTasks;
+		this.futureTasks = futureTasks;
+	}
 
 	/* Añade una nueva tarea
 	 * @param text: descripción de la tarea
 	 * @param date: fecha en la que la tarea debe completarse
 	 */
-	public void add(String text,int date) {}
+	public void add(String text,int date) {
+		// ?? TaskIF aux = findNode(date, futureTasks);
+		TaskIF aux = findNote(date, futureTasks);
+		if (aux != null) {
+			futureTasks.remove(aux);
+		}
+		TaskIF newTask = new Task(text, date);
+		futureTasks.add(newTask);
+	}
 
 	/* Elimina una tarea
 	 * @param date: fecha de la tarea que se debe eliminar
